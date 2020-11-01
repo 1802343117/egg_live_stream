@@ -1,17 +1,26 @@
 {
   "name": "live_stream",
   "version": "1.0.0",
-  "description": "",
+  "description": "直播项目API接口编写",
   "private": true,
   "egg": {
     "declarations": true
   },
   "dependencies": {
+    "await-stream-ready": "^1.0.1",
+    "crypto": "^1.0.1",
+    "dayjs": "^1.9.4",
     "egg": "^2.15.1",
     "egg-cors": "^2.2.3",
+    "egg-jwt": "^3.1.7",
+    "egg-redis": "^2.4.0",
     "egg-scripts": "^2.11.0",
     "egg-sequelize": "^6.0.0",
-    "mysql2": "^2.2.5"
+    "egg-valparams": "^1.4.3",
+    "md5": "2.3.0",
+    "mysql2": "^2.2.5",
+    "node-media-server": "^2.2.4",
+    "stream-wormhole": "^1.1.0"
   },
   "devDependencies": {
     "autod": "^3.0.1",
@@ -27,8 +36,8 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-live_stream",
-    "stop": "egg-scripts stop --title=egg-server-live_stream",
+    "start": "egg-scripts start --daemon --title=egg-server-live-stream-api",
+    "stop": "egg-scripts stop --title=egg-server-live-stream-api",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
@@ -45,6 +54,6 @@
     "type": "git",
     "url": ""
   },
-  "author": "",
+  "author": "Tunl",
   "license": "MIT"
 }
