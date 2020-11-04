@@ -21,7 +21,7 @@ module.exports = (appInfo) => {
   config.middleware = ['errorHandler', 'auth']
 
   config.auth = {
-    match: ['/api/live/create','/api/logout','/api/user/info','/api/live/changestatus','/api/live/list/:page','/api/live/read/:id'],
+    match: ['/api/live/create','/api/logout','/api/user/info','/api/live/changestatus','/api/live/list/:page'],
   }
 
   // add your user config here
@@ -88,6 +88,18 @@ module.exports = (appInfo) => {
     secret: 'qhdgw@45ncashdaksh2!#@3nxjdas*_672',
   }
 
+  // io配置
+  config.io = {
+    init: {
+      wsEngine: 'ws',
+    },
+    namespace: {
+      '/': {
+        connectionMiddleware: [],
+        packetMiddleware: [],
+      },
+    },
+  };
 
   // redis存储
   config.redis = {
@@ -95,7 +107,7 @@ module.exports = (appInfo) => {
       port: 6379, // Redis port
       host: '127.0.0.1', // Redis host
       password: '',
-      db: 2,
+      db: 0,
     },
   }
   
