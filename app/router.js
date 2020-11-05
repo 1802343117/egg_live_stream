@@ -9,6 +9,8 @@ module.exports = (app) => {
   io.of('/').route('comment', io.controller.nsp.comment)
   io.of('/').route('joinLive', io.controller.live.joinLive);
   io.of('/').route('leaveLive', io.controller.live.leaveLive);
+  io.of('/').route('gift', io.controller.nsp.gift)
+  router.get('/api/gift/list', controller.api.gift.list)
   router.get("/", controller.home.index);
   router.get("/list", controller.home.list);
   // 用户注册

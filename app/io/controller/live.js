@@ -181,6 +181,88 @@ class NspController extends Controller {
       });
     });
   }
+
+  // 直播间送礼物
+  async gift() {
+    const { ctx, app, service, helper } = this;
+    const nsp = app.io.of('/');
+    // 接收参数
+
+    const message = ctx.args[0] || {};
+
+    // 当前连接
+    const socket = ctx.socket;
+    const id = socket.id;
+
+    const { live_id, token, gift_id } = module.exports = message;
+
+    // 验证用户token
+    const user = await this.checkToken(token);
+    if (!user) {
+      return;
+    }
+    // 验证当前直播间是否存在于直播中
+    const msg = await service.live.checkStatus(live_id);
+    if (msg) {
+      socket.emit(id, ctx.helper.parseMsg('error', msg));
+      return;
+    }
+
+    const room = 'live_' + live_id;
+
+    // 验证礼物是否存在
+    const gift = await app.model.Gift.findOne({
+      where: {
+        id: gift_id,
+      },
+    });
+
+    if (!gift) {
+      socket.emit(id, ctx.helper.parseMsg('error', '该礼物不存在'));
+      return;
+    }
+
+    // 当前用户金币是否不足
+    if (user.coin < gift.coin) {
+      socket.emit(id, ctx.helper.parseMsg('error', '金币不足，请先充值'));
+      return;
+    }
+
+    // 扣除金币
+    const user1 = await app.model.User.findOne({
+      where: {
+        id: user.id,
+      },
+    });
+    user1.coin -= gift.coin;
+    user1.save();
+
+    // 写入到礼物记录表
+    app.model.LiveGift.create({
+      live_id,
+      user_id: user.id,
+      gift_id,
+    });
+
+    // 直播间总金币数+1
+    const live = await app.model.Live.findOne({
+      where: {
+        id: live_id,
+      },
+    });
+    live.coin += gift.coin;
+    live.save();
+
+    // 推送消息到直播间
+    nsp.to(room).emit('gift', {
+      avatar: user.avatar,
+      username: user.nickname || user.username,
+      gift_name: gift.name,
+      gift_image: gift.image,
+      gift_coin: gift.coin,
+      num: 1,
+    });
+  }
 }
 
 module.exports = NspController;
