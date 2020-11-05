@@ -6,6 +6,7 @@
 module.exports = (app) => {
   const { router, controller, io } = app;
   // socket路由配置测试
+  io.of('/').route('comment', io.controller.nsp.comment)
   io.of('/').route('joinLive', io.controller.live.joinLive);
   io.of('/').route('leaveLive', io.controller.live.leaveLive);
   router.get("/", controller.home.index);
