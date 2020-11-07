@@ -180,29 +180,3 @@ class ManagerController extends Controller {
 }
 
 module.exports = ManagerController;
-
-//     const Op = app.Sequelize.Op
-
-
-//     if (
-//       await app.model.Manager.findOne({
-//         where: {
-//           id: {
-//             [Op.ne]: id,
-//           },
-//           username,
-//         },
-//       })
-//     ) {
-//       return ctx.apiFail('管理员名称已存在')
-//     }
-
-
-//     manager.username = username
-//     if (password) {
-//       manager.password = password
-//     }
-
-
-//     ctx.apiSuccess(await manager.save())
-//   }
