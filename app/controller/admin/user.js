@@ -1,11 +1,3 @@
-/* eslint-disable key-spacing */
-/* eslint-disable indent */
-/* eslint-disable object-shorthand */
-/* eslint-disable prefer-const */
-/* eslint-disable comma-spacing */
-/* eslint-disable object-curly-spacing */
-/* eslint-disable semi */
-/* eslint-disable no-unused-vars */
 'use strict';
 
 const Controller = require('egg').Controller;
