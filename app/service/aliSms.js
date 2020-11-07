@@ -1,20 +1,22 @@
 'use strict'
+
 const Service = require('egg').Service
 const SMSClient = require('@alicloud/sms-sdk')
 const await = require('await-stream-ready/lib/await')
 
 
+
 const config = {
-  AccessKeyId: '********', //阿里云key
-  AccessKeySecret: '********', // 阿里云密钥
+  AccessKeyId: 'LTAI4G3RbEnYyXpd2ez6jbo4', //阿里云key
+  AccessKeySecret: '6vVUWNdOhUunRQCLyrjszgKwVZMjkv', // 阿里云密钥
 }
 
 
 // 签名模板，注意修改
 const sign = {
   REG_CODE: {
-    SignName: '陶然然',
-    TemplateCode: 'SMS_135275229',
+    SignName: '轻直播',
+    TemplateCode: 'SMS_189611227',
   },
 }
 

@@ -1,5 +1,7 @@
 'use strict'
 
+const await = require('await-stream-ready/lib/await')
+
 
 const Controller = require('egg').Controller
 
@@ -123,26 +125,20 @@ class UserController extends Controller {
     ctx.apiSuccess(user)
   }
 
-  // 退出登录
-  async logout() {
-    const { ctx, service } = this;
-    let current_use_id = ctx.authUser.id;
+    //退出登录
+    async logout(){
+      const {ctx, service} = this
 
-    if (!(await service.cache.remove('user_' + current_use_id))) {
-      ctx.throw(400, '退出登录失败');
+      let current_user_id = ctx.authUser.id
+
+      if(!(await service.cache.remove('user_' + current_user_id))) {
+        ctx.throw(400,'退出登录失败')
+      }
+
+      ctx.apiSuccess('ok')
     }
-    ctx.apiSuccess('ok');
-  }
 
-  // 获取当前用户信息
-  async info() {
-    const { ctx } = this;
-    let user = JSON.parse(JSON.stringify(ctx.authUser));
-    delete user.password;
-    ctx.apiSuccess(user);
-  }
-
-  // 手机短信登录
+    // 手机短信登录
   async phoneLogin() {
     const { ctx, app, service } = this
     // 参数验证
@@ -193,6 +189,41 @@ class UserController extends Controller {
       ctx.throw(400, '登录失败')
     }
     ctx.apiSuccess(user)
+  }
+
+  //获取当前用户信息
+  async info(){
+    const {ctx} = this
+    let user = JSON.parse(JSON.stringify(ctx.authUser))
+    console.log(user)
+    delete user.password
+    ctx.apiSuccess(user)
+  }
+
+
+  async wxLogin() {
+    const { ctx, app } = this;
+    const loginService = app.weapp.LoginService.create(ctx.request, ctx.response);
+    await loginService.login()
+      .then(data => {
+        console.log(data)
+        ctx.body = data;
+      });
+  }
+
+  async user() {
+    const { ctx, app } = this;
+    const loginService = app.weapp.LoginService.create(ctx.request, ctx.response);
+    await loginService.check()
+      .then(data => {
+        ctx.body = {
+          code: 0,
+          message: 'ok',
+          data: {
+            userInfo: data.userInfo,
+          },
+        };
+      });
   }
 }
 
